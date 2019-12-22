@@ -1,24 +1,34 @@
 <template>
   <div style="padding-bottom:120px; padding-top: 120px; ">
-    <form action="/charge" method="post" id="payment-form" style="width:450px; padding:20px; background-color: #909399; margin:auto; text-align:center">
-      <div class="form-row">
-        <label for="card-element" class="textcard">
-          Email:
-        </label>
-        <input class="el-input__inner" type="email" placeholder="ejemplo@gmail.com">
-        <label for="card-element">
-          Credit or debit card:
-        </label>
-        <div id="card-element">
-          <!-- A Stripe Element will be inserted here. -->
-        </div>
+  <div class="row" style="border: solid #303133; padding-left: 20px; padding-right:20px;">
+    <div class="col-lg-6">
+      <img src="/assets/images/mockup/book.png" style="width:auto; height: 450px; text-align: center; margin: auto;">
+    </div>
+    <div class="col-lg-6">
+          <form class="el-form" action="/charge" method="post" id="payment-form" style="width:450px; padding:20px; background-color: #fff; margin:auto; text-align:center">
+            <div class="form-row">
+              <label class="el-form-item__label" for="card-element">
+                Email:
+              </label>
+              <input class="el-input__inner" type="email" placeholder="ejemplo@gmail.com">
+              <label class="el-form-item__label" for="card-element">
+                Credit or debit card:
+              </label>
+              <div class="el-input__inner" id="card-element">
+                A Stripe Element will be inserted here. -->
+              </div>
 
-        <!-- Used to display form errors. -->
-        <div id="card-errors" role="alert"></div>
+              <!-- Used to display form errors. -->
+              <div id="card-errors" role="alert"></div>
+            </div> -->
+            <br/>
+            <div class="el-form-item__content">
+
+            <button type="primary" class="el-button el-button--primary">Submit Payment</button>
+            </div>
+          </form>
       </div>
-      <br/>
-      <button type="primary" class="el-button el-button--default">Submit Payment</button>
-    </form>
+    </div>
   </div>
 </template>
 <script>
