@@ -1,16 +1,48 @@
 <template>
-<div>
-  <body class="bg-gray-900">
-    <nav class="bg-purple-900 h-20 flex justify-center">
-      <h1 class="text-white text-5xl">Payments</h1>
-    </nav>
-    <div class="flex flex-col items-center mt-32 text-white text-2xl">
-      <p>Thank you for your generous pay.</p>
-      <p>Your payment has been received.</p>
-      <a href="/">
-        <button class="bg-blue-700 rounded p-4 mt-3">Return</button>
-      </a>
+  <section id="hero" class="backgroundHeight bg-dark mycol">
+    <div>
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="text-white">Thank you for your <br>purchase.</h1>
+        </div>
+        <br>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-whit mb-30" style="text-align:center;">
+            <button @click="goIndex" type="primary" class="btn btn--primary btn--rounded">Return</button>
+          </p>
+        </div>
+      </div>
     </div>
-  </body>
-</div>
+  </section>
 </template>
+
+<script>
+export default {
+  methods: {
+    goIndex () {
+      this.$router.push({ name: "index" });
+    }
+  }
+}
+</script>
+
+
+<style>
+  .backgroundHeight {
+    height:100vh;
+  }
+
+  .backgroundHeight h1 {
+    font-size: 65px;
+    font-weight: 700;
+    line-height: 70px;
+    text-transform: uppercase;
+  }
+  .mycol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

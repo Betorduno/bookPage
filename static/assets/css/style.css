@@ -2969,8 +2969,8 @@ li a:hover,
     #Landing Page / Promo Page
 \*------------------------------------*/
 .landing-hero {
-	height: 100vh;
-	padding-top: 200px;
+	padding-top: 100px;
+	padding-bottom: 100px;
 }
 
 .landing-hero h1 {

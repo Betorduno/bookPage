@@ -1,32 +1,34 @@
 <template>
-  <div style="padding-bottom:120px; padding-top: 120px; ">
-
-  <div class="row" style="border: solid #303133; padding-left: 20px; padding-right:20px;">
-    <div class="col-lg-6">
-      <img src="/assets/images/mockup/book.png" style="width:auto; height: 450px; text-align: center; margin: auto;">
-    </div>
-    <div class="col-lg-6">
-          <div class="el-form" id="payment-form" style="width:450px; padding:20px; background-color: #fff; margin:auto; text-align:center">
-            <div class="form-row">
-              <label class="el-form-item__label" for="card-element">
-                Email:
-              </label>
-              <input class="el-input__inner" v-model="email" type="email" placeholder="ejemplo@gmail.com">
-              <label class="el-form-item__label" for="card-element">
-                Credit or debit card:
-              </label>
-              <div class="el-input__inner" id="card-element">
-                A Stripe Element will be inserted here. -->
-              </div>
-              <!-- Used to display form errors. -->
-              <div id="card-errors" role="alert"></div>
-            </div> -->
-            <br/>
-            <div class="el-form-item__content">
-
-            <button @click="clickToken" type="primary" class="el-button el-button--primary">Submit Payment</button>
+  <div id="form-payment" style="padding-bottom:50px;text-align:center;padding-top: 50px;display:flex;align-items: center;justify-content: center;">
+    <div class="row" style="padding-left:20px;padding-right:20px;text-align:center;display:flex;align-items: center;justify-content: center;">
+      <div class="col-lg-6">
+        <img src="/assets/images/mockup/book.png" style="width:auto; height: 450px; text-align: center; margin: auto;">
+      </div>
+      <div class="col-lg-6">
+        <div class="el-form" style="width:450px; padding:20px; background-color: #fff; margin:auto; text-align:center">
+          <div class="form-row">
+            <label class="el-form-item__label" for="card-element">
+              Name:
+            </label>
+            <input class="el-input__inner" v-model="name" type="text" />
+            <label class="el-form-item__label" for="card-element">
+              Email:
+            </label>
+            <input class="el-input__inner" v-model="email" type="email" placeholder="ejemplo@gmail.com">
+            <label class="el-form-item__label" for="card-element">
+              Credit or debit card:
+            </label>
+            <div class="el-input__inner" id="card-element">
+              A Stripe Element will be inserted here. -->
             </div>
+            <!-- Used to display form errors. -->
+            <div id="card-errors" role="alert"></div>
           </div>
+          <br/>
+          <div class="el-form-item__content">
+            <button @click="clickToken" type="primary" class="btn btn--primary btn--rounded">Submit Payment</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -34,12 +36,14 @@
 <script>
 import { BASE_URL } from '../../utils/endspoint';
 import axios from 'axios';
+import { Loading } from 'element-ui'
 let stripe = Stripe('pk_test_ZCI214Ne4jFD5Dj3FyVO6s8200Cqp9AJGO');
 
 export default {
   data () {
     return {
       url: BASE_URL + '/paybook',
+      name: '',
       email: '',
       card: ''
     }
@@ -82,31 +86,12 @@ export default {
           displayError.textContent = '';
         }
       });
-
-      // Handle form submission.
-      // var form = document.getElementById('payment-form');
-      // form.addEventListener('submit', function(event) {
-      //   event.preventDefault();
-
-      // });
-
-      // Submit the form with the token ID.
-      // function stripeTokenHandler(token) {
-      //   // Insert the token ID into the form so it gets submitted to the server
-      //   var form = document.getElementById('payment-form');
-      //   var hiddenInputToken = document.createElement('input');
-      //   hiddenInputToken.setAttribute('type', 'hidden');
-      //   hiddenInputToken.setAttribute('name', 'stripeToken');
-      //   hiddenInputToken.setAttribute('value', token.id);
-      //   form.appendChild(hiddenInputToken);
-
-      //   // Submit the form
-      //   form.submit();
-      // }
     },
     clickToken () {
       let url = this.url;
       let email = this.email;
+      let name = this.name;
+      let loadingInstance = Loading.service({});
 
       stripe.createToken(this.card).then((result) => {
           if (result.error) {
@@ -114,13 +99,11 @@ export default {
             var errorElement = document.getElementById('card-errors');
             errorElement.textContent = result.error.message;
           } else {
-            // Send the token to your server.
-            // stripeTokenHandler(result.token);
-
             let data = {
               stripeToken: result.token.id,
-              email
-             };
+              email,
+              name
+            };
 
             axios({
                 url,
@@ -132,19 +115,20 @@ export default {
                 data
             })
             .then(response => {
-              console.log(response);
+                loadingInstance.close()
+                this.$router.push({ name: 'completed' });
              }).catch(err => {
-              this.$notify.error({
-                  title: 'Error',
-                  message: err.message
-              });
+                loadingInstance.close()
+                this.$notify.error({
+                    title: 'Error',
+                    message: err.message
+                });
             })
           }
       });
     }
   },
   mounted(){
-      // this.cliente();
       this.stripePayment()
   }
 }
