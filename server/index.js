@@ -1,7 +1,6 @@
 const express = require('express')
 const consola = require('consola')
 
-const stripe = require("stripe")('sk_test_eORCCVimXdzqx6SSfddGEikv00lQ1MZyPQ');
 const bodyParser = require("body-parser");
 
 const { Nuxt, Builder } = require('nuxt')
@@ -24,41 +23,6 @@ async function start () {
   } else {
     await nuxt.ready()
   }
-
-  app.post("/charge", (req, res) => {
-    let amount = 500;
-    stripe.charges.create(
-      {
-        amount,
-        currency: 'usd',
-        source: req.body.stripeToken,
-        description: 'Charge for jenny.rosen@example.com',
-      },
-      function(err, charge) {
-        // asynchronously called
-        res.send({
-          status: 200,
-          charge
-        })
-      }
-    );
-    // stripe.customers.create({
-    //   email: req.body.email,
-    //   card: req.body.id
-    // })
-    // .then(customer =>
-    //   stripe.charges.create({
-    //     amount,
-    //     description: "Sample Charge",
-    //     currency: "USD",
-    //     customer: customer.id
-    //   }))
-    // .then(charge => res.send(charge))
-    // .catch(err => {
-    //   console.log("Error:", err);
-    //   res.status(500).send({error: "Purchase Failed"});
-    // });
-  });
 
   // Give nuxt middleware to express
   app.use(nuxt.render)
