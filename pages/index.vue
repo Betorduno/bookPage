@@ -2,7 +2,7 @@
 <div>
   <body class="body-scroll">
     <div id="wrapper" class="wrapper clearfix">
-      <homeHeader />
+      <!-- <homeHeader /> -->
       <homeBody />
       <homeFooter />
     </div>

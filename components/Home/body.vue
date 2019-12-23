@@ -21,7 +21,7 @@
 							<div class="slide--headline">book title.</div>
 							<div class="slide--bio">book description</div>
 							<div class="slide--action">
-								<a class="btn btn--primary btn--rounded" href="/download">download</a>
+								<a class="btn btn--primary btn--rounded" style="font-size:15px;" href="/download">buy</a>
 							</div>
 						</div>
 					</div>
