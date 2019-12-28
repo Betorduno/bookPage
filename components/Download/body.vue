@@ -36,7 +36,7 @@
 <script>
 import { BASE_URL } from '../../utils/endspoint';
 import axios from 'axios';
-import { Loading } from 'element-ui'
+import { Loading } from 'element-ui';
 let stripe = Stripe('pk_test_ZCI214Ne4jFD5Dj3FyVO6s8200Cqp9AJGO');
 
 export default {
@@ -85,6 +85,7 @@ export default {
         } else {
           displayError.textContent = '';
         }
+
       });
     },
     clickToken () {
@@ -95,6 +96,7 @@ export default {
 
       stripe.createToken(this.card).then((result) => {
           if (result.error) {
+            loadingInstance.close();
             // Inform the user if there was an error.
             var errorElement = document.getElementById('card-errors');
             errorElement.textContent = result.error.message;
@@ -116,7 +118,7 @@ export default {
             })
             .then(response => {
                 loadingInstance.close()
-                this.$router.push({ name: 'completed' });
+                this.$router.push({ name: 'pageDownload'});
              }).catch(err => {
                 loadingInstance.close()
                 this.$notify.error({
