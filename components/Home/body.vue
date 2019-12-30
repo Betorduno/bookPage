@@ -7,19 +7,19 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12">
 							<div class="slide--logo mt-100 hidden-xs wow fadeInUp" data-wow-duration="1s">
-								<img src="assets/images/logo/logo-light.png" alt="logo hero">
+								<img :src="logo" alt="logo hero">
 							</div>
 						</div>
 					</div>
 					<div class="row row-content">
 						<div class="col-xs-12 col-sm-5 col-md-5 wow fadeInUp" data-wow-duration="1s">
 							<div class="slide--holder">
-								<img class="img-responsive" src="assets/images/mockup/book.png" alt="screens">
+								<img class="img-responsive" :src="imageBook" alt="screens">
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6 col-sm-offset-1 col-md-6 col-md-offset-1 pt-100 wow fadeInUp" data-wow-duration="1s">
-							<div class="slide--headline">book title.</div>
-							<div class="slide--bio">book description</div>
+							<div class="slide--headline">{{title}}</div>
+							<div class="slide--bio">{{description}}</div>
 							<div class="slide--action">
 								<a class="btn btn--primary btn--rounded" style="font-size:15px;" href="/download">buy</a>
                 <a class="btn btn--primary btn--rounded" style="font-size:15px;" href="/pageDownload">Download</a>
@@ -35,8 +35,8 @@
 				<div class="row clearfix">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-3">
 						<div class="heading heading-1 mb-70 text--center wow fadeInUp" data-wow-duration="1s">
-							<h2 class="heading--title">Sell Your E-book</h2>
-							<p class="heading--desc">we shows only the best websites, portfolios ans landing pages built completely with passion, simplicity & creativity !</p>
+							<h2 class="heading--title">{{title_feature}}</h2>
+							<p class="heading--desc">{{description_feature}}</p>
 						</div>
 					</div>
 				</div>
@@ -91,8 +91,8 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-5">
 						<div class="heading heading-1 mb-60 wow fadeInUp" data-wow-duration="1s">
-							<h2 class="heading--title pt-20">Chapters included</h2>
-							<p class="heading--desc pl-0">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p>
+							<h2 class="heading--title pt-20">{{title_chapters}}</h2>
+							<p class="heading--desc pl-0">{{description_chapters}}</p>
 						</div>
 						<div class="feature-panel mb-50 wow fadeInUp" data-wow-duration="1s">
 							<div class="feature--icon">
@@ -130,8 +130,8 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-6 col-content pl-100">
-						<h3>About author</h3>
-						<p>Torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum fermentum nunc, etiam pharetra, erat sed fermentum feugiat.</p>
+						<h3>{{title_about}}</h3>
+						<p>{{about_description}}</p>
 						<img src="assets/images/mockup/signture.png" alt="signture">
 					</div>
 				</div>
@@ -142,7 +142,7 @@
 				<div class="row clearfix">
 					<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
 						<div class="heading heading-1 mb-80 text--center wow fadeInUp" data-wow-duration="1s">
-							<h2 class="heading--title">Testimonials</h2>
+							<h2 class="heading--title">{{title_testimonials}}</h2>
 						</div>
 					</div>
 				</div>
@@ -215,8 +215,8 @@
 				<div class="row clearfix">
 					<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
 						<div class="heading heading-1 mb-80 text--center wow fadeInUp" data-wow-duration="1s">
-							<h2 class="heading--title">Pricing plans</h2>
-							<p class="heading--desc">we shows only the best websites, portfolios ans landing pages built completely with passion, simplicity & creativity !</p>
+							<h2 class="heading--title">{{title_pricingplans}}</h2>
+							<p class="heading--desc">{{description_pricingplans}}</p>
 						</div>
 					</div>
 				</div>
@@ -300,8 +300,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-3 mb-100 wow fadeInUp" data-wow-duration="1s">
-						<h3>Showcase and sell your e-book in simple way.</h3>
-						<p>This should be used to tell a story and let your users know a little more about your product or service.</p>
+						<h3>{{footer_title}}</h3>
+						<p>{{footer_description}}</p>
 						<a class="btn btn--primary btn--rounded" href="/download">download</a>
 					</div>
 					<!-- .col-md-12 end -->
@@ -314,7 +314,72 @@
 </template>
 
 <script>
+import { BASE_URL } from '../../utils/endspoint';
+import axios from 'axios';
 export default {
+data () {
+    return {
+      urlHeader: BASE_URL + '/landingPageHeader',
+      urlBody: BASE_URL + '/landingPageBody',
+      title: null,
+      description: null,
+      imageBook: null,
+      logo: null,
+      title_feature: null,
+      description_feature: null,
+      title_chapters: null,
+      description_chapters: null,
+      title_about: null,
+      about_description: null,
+      title_testimonials: null,
+      title_pricingplans: null,
+      description_pricingplans: null,
+      footer_title: null,
+      footer_description: null
 
+    }
+  },
+  methods: {
+    queryHeader(){
+      let urlHeader=this.urlHeader;
+        fetch(urlHeader)
+          .then((response)=> {
+            return response.json();
+          })
+          .then((datos)=>{
+            this.title =  datos.header.title;
+            this.description = datos.header.description;
+            this.imageBook =BASE_URL+datos.header.imageBook[0].url
+            this.logo = BASE_URL+datos.header.logo.url;
+          })
+    }, queryBody(){
+      let urlBody=this.urlBody;
+        fetch(urlBody)
+          .then((response)=> {
+            return response.json();
+          })
+          .then((datos)=>{
+            console.log('body content>>>',datos.body);
+
+            this.title_feature = datos.body.title_feature;
+            this.description_feature = datos.body.description_feature;
+            this.title_chapters = datos.body.title_chapters;
+            this.description_chapters = datos.body.description_chapters;
+            this.title_about = datos.body.title_about;
+            this.about_description = datos.body.about_description;
+            this.title_testimonials = datos.body.title_testimonials;
+            this.title_pricingplans = datos.body.title_pricingplans;
+            this.description_pricingplans = datos.body.description_pricingplans;
+            this.footer_title = datos.body.footer_title;
+            this.footer_description = datos.body.footer_description;
+
+          })
+    }
+  },
+  mounted() {
+    this.queryHeader();
+    this.queryBody();
+
+  },
 }
 </script>
