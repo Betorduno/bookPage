@@ -18,9 +18,6 @@
               Submit Payment
             </button>
           </div>
-          <br/>
-           <el-alert v-if="errorEmail!=null" :title="errorEmail" type="warning">
-          </el-alert>
         </div>
         <br>
          <div v-if="estado" class="el-form" style="width:450px; padding:20px; background-color: #fff; margin:auto; text-align:center">
@@ -48,8 +45,7 @@ export default {
       email: "",
       estado:false,
       urlBook:"",
-      name: "",
-      errorEmail:null
+      name: ""
     };
   },
   methods: {
@@ -80,14 +76,20 @@ export default {
                   this.estado = response.data.data.estado;
                   }
                   }).catch(err => {
-                    this.errorEmail= "Error: Email not found";
+                    this.$notify.error({
+                          title: 'Error',
+                          message: 'Email not found.'
+                      });
                     this.name = null;
                     this.urlBook = null;
                     this.estado = false;
                     });
                   }
                   else{
-                    this.errorEmail= 'Error:Invalid email'
+                    this.$notify.error({
+                          title: 'Error',
+                          message: 'Fill in the field email.'
+                      });
                   }
                 }
               }
