@@ -3,9 +3,10 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _36b373d2 = () => interopDefault(import('../pages/completed.vue' /* webpackChunkName: "pages/completed" */))
-const _74fdc4d1 = () => interopDefault(import('../pages/download.vue' /* webpackChunkName: "pages/download" */))
-const _7c82cb4e = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _3bfbdf38 = () => interopDefault(import('../pages/completed.vue' /* webpackChunkName: "pages/completed" */))
+const _6ce754ab = () => interopDefault(import('../pages/download.vue' /* webpackChunkName: "pages/download" */))
+const _c776214c = () => interopDefault(import('../pages/pageDownload.vue' /* webpackChunkName: "pages/pageDownload" */))
+const _7d20a8bf = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 // TODO: remove in Nuxt 3
 const emptyFn = () => {}
@@ -25,15 +26,19 @@ export const routerOptions = {
 
   routes: [{
     path: "/completed",
-    component: _36b373d2,
+    component: _3bfbdf38,
     name: "completed"
   }, {
     path: "/download",
-    component: _74fdc4d1,
+    component: _6ce754ab,
     name: "download"
   }, {
+    path: "/pageDownload",
+    component: _c776214c,
+    name: "pageDownload"
+  }, {
     path: "/",
-    component: _7c82cb4e,
+    component: _7d20a8bf,
     name: "index"
   }],
 

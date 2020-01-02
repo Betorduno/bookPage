@@ -10,11 +10,11 @@
             <label class="el-form-item__label" for="card-element">
               Name:
             </label>
-            <input class="el-input__inner" v-model="name" type="text" />
+            <input class="el-input__inner" v-model="name" type="text" required>
             <label class="el-form-item__label" for="card-element">
               Email:
             </label>
-            <input class="el-input__inner" v-model="email" type="email" placeholder="ejemplo@gmail.com">
+            <input class="el-input__inner" v-model="email" type="email" placeholder="ejemplo@gmail.com" required>
             <label class="el-form-item__label" for="card-element">
               Credit or debit card:
             </label>
@@ -36,7 +36,7 @@
 <script>
 import { BASE_URL } from '../../utils/endspoint';
 import axios from 'axios';
-import { Loading } from 'element-ui'
+import { Loading } from 'element-ui';
 let stripe = Stripe('pk_test_ZCI214Ne4jFD5Dj3FyVO6s8200Cqp9AJGO');
 
 export default {
@@ -85,47 +85,62 @@ export default {
         } else {
           displayError.textContent = '';
         }
+
       });
     },
+    validateEmail(email) {
+          var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return re.test(String(email).toLowerCase());
+      },
     clickToken () {
       let url = this.url;
       let email = this.email;
       let name = this.name;
       let loadingInstance = Loading.service({});
+        if(this.validateEmail(this.email)& this.name != null){
 
-      stripe.createToken(this.card).then((result) => {
-          if (result.error) {
-            // Inform the user if there was an error.
-            var errorElement = document.getElementById('card-errors');
-            errorElement.textContent = result.error.message;
-          } else {
-            let data = {
-              stripeToken: result.token.id,
-              email,
-              name
-            };
+            stripe.createToken(this.card).then((result) => {
+                if (result.error) {
+                  loadingInstance.close();
+                  // Inform the user if there was an error.
+                  var errorElement = document.getElementById('card-errors');
+                  errorElement.textContent = result.error.message;
+                } else {
+                  let data = {
+                    stripeToken: result.token.id,
+                    email,
+                    name
+                  };
 
-            axios({
-                url,
-                method: 'POST',
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                },
-                data
-            })
-            .then(response => {
-                loadingInstance.close()
-                this.$router.push({ name: 'completed' });
-             }).catch(err => {
-                loadingInstance.close()
-                this.$notify.error({
-                    title: 'Error',
-                    message: err.message
-                });
-            })
-          }
-      });
+                  axios({
+                      url,
+                      method: 'POST',
+                      headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                      },
+                      data
+                  })
+                  .then(response => {
+                      loadingInstance.close()
+                      this.$router.push({ name: 'pageDownload'});
+                  }).catch(err => {
+                      loadingInstance.close()
+                      this.$notify.error({
+                          title: 'Error',
+                          message: err.message
+                      });
+                  })
+                }
+            });
+        }
+        else{
+          loadingInstance.close();
+          this.$notify.error({
+                          title: 'Error',
+                          message: 'LLene todos los campos del formulario'
+                      });
+        }
     }
   },
   mounted(){
